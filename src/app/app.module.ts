@@ -18,7 +18,8 @@ import { PaginatorModule } from 'primeng/paginator';
     FontAwesomeModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FormsModule, PaginatorModule
+    FormsModule,
+  
   ],
   providers: [],
   bootstrap: [AppComponent],
