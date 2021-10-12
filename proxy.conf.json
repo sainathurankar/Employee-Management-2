@@ -1,21 +1,21 @@
 {
   "/employees": {
-    "target": "http://localhost:8080",
+    "target": "http://ec2-3-89-110-212.compute-1.amazonaws.com:8080/",
     "secure": false,
     "changeOrigin": true
   },
   "/employee": {
-    "target": "http://localhost:8080",
+    "target": "http://ec2-3-89-110-212.compute-1.amazonaws.com:8080/",
     "secure": false,
     "changeOrigin": true
   },
   "/create": {
-    "target": "http://localhost:8080",
+    "target": "http://ec2-3-89-110-212.compute-1.amazonaws.com:8080/",
     "secure": false,
     "changeOrigin": true
   },
   "/update": {
-    "target": "http://localhost:8080",
+    "target": "http://ec2-3-89-110-212.compute-1.amazonaws.com:8080/",
     "secure": false,
     "changeOrigin": true
   }
