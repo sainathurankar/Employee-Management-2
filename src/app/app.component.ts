@@ -8,4 +8,6 @@ import { faCoffee, faSatellite } from '@fortawesome/free-solid-svg-icons';
 })
 export class AppComponent {
   title = 'employee-management';
+  faCoffee = faCoffee;
+  faSatellite = faSatellite;
 }

@@ -1,28 +1,34 @@
+<nav class="navbar navbar-light fixed-top p-2 text-dark">
+  <div class="container-fluid">
+    <h1 class="user-select-none">EMPLOYEE MANAGEMENT</h1>
+    <div class="d-flex">
+      <form class="d-flex">
+        <input
+          class="form-control me-2"
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+          [(ngModel)]="listFilter"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </form>
+      <button
+        type="button"
+        (click)="addClicked()"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Add Employee
+      </button>
+    </div>
+  </div>
+</nav>
+
 <main>
-  <div class="container">
-    <div class="row mx-5 mb-2">
-      <div class="d-flex">
-        <div class="col-md-4 user-select-none"><h3>Employees</h3></div>
-        <form class="d-flex col-md-3 offset-1">
-          <input
-            class="form-control me-2"
-            type="text"
-            placeholder="Search Employees"
-            aria-label="Search"
-            [(ngModel)]="listFilter"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </form>
-        <button
-          type="button"
-          routerLinkActive="active"
-          routerLink="/add"
-          class="btn btn-primary col-md-2 offset-2"
-          style="width: 190px"
-        >
-          Add New Employee
-        </button>
-      </div>
+  <div class="container-fluid">
+    <div class="row">
+      <h3 class="text-center user-select-none">Existing Employees</h3>
     </div>
 
     <div *ngIf="listFilter" class="row m-2 justify-content-md-center">
@@ -35,7 +41,7 @@
       *ngIf="filteredEmployees.length; else elseBlock"
       class="row row-cols-auto justify-content-md-center"
     >
-      <div class="col m-1" *ngFor="let Employee of pageOfItems">
+      <div class="col m-1" *ngFor="let Employee of filteredEmployees">
         <div class="card">
           <div class="card-body">
             <div class="row row-cols-2">
@@ -52,8 +58,9 @@
                 <a
                   href="#"
                   class="btn btn-danger"
-                  routerLinkActive="active"
-                  [routerLink]="['/update', Employee.id]"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  (click)="EditEmployee(Employee)"
                   >Edit</a
                 >
               </div>
@@ -61,23 +68,182 @@
                 <img
                   [src]="Employee.profile_image"
                   class="img-thumbnail"
-                  alt="Profile"
+                  alt="..."
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-    </div><div class="pagination justify-content-center">
-        <jw-pagination
-          [items]="filteredEmployees"
-          [pageSize]="9"
-          (changePage)="onChangePage($event)"
-        ></jw-pagination>
-      </div>
+      <!-- <p-paginator
+        [rows]="10"
+        [totalRecords]="100"
+        (onPage)="paginate($event)"
+      ></p-paginator> -->
+    </div>
     <div class="row text-center">
       <p><ng-template #elseBlock>No Employees to display</ng-template></p>
     </div>
   </div>
 </main>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ modal_title }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formValue">
+          <div class="mb-3">
+            <label for="name" class="form-label"
+              >Name<span style="color: red">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="name"
+              [pattern]="'^[a-zA-Z \-\']*$'"
+              required
+            />
+            <div class="error">
+              <p
+                *ngIf="
+                  (formValue.controls.name.touched ||
+                    formValue.controls.name.dirty) &&
+                  (formValue.controls.name.value == '' ||
+                    formValue.controls.name.value == null)
+                "
+              >
+                Name is required
+              </p>
+
+              <p
+                *ngIf="
+                  (formValue.controls.name.touched ||
+                    formValue.controls.name.dirty) &&
+                  formValue.controls.name.invalid &&
+                  formValue.controls.name.value != null &&
+                    formValue.controls.name.value != ''
+                "
+              >
+                Invalid Name
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="age" class="form-label"
+              >Age<span style="color: red">*</span></label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="age"
+              formControlName="age"
+              min="18"
+              max="100"
+              required
+            />
+            <div class="error"><p
+            *ngIf="
+              (formValue.controls.age.touched ||
+                formValue.controls.age.dirty) &&
+              formValue.controls.age.invalid &&
+              formValue.controls.age.value != null
+            "
+          >
+            Age must be greater than 18 and less than 100
+          </p>
+          <p
+            *ngIf="
+              (formValue.controls.age.touched ||
+                formValue.controls.age.dirty) &&
+              formValue.controls.age.invalid &&
+              formValue.controls.age.value == null
+            "
+          >
+            Age is required
+          </p></div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="salary" class="form-label"
+              >Salary<span style="color: red">*</span></label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="salary"
+              formControlName="salary"
+              min="0"
+              required
+            />
+            <div class="error"><p
+            *ngIf="
+              (formValue.controls.salary.touched ||
+                formValue.controls.salary.dirty) &&
+              (formValue.controls.salary.value == null)
+            "
+          >
+            Salary is required
+          </p>
+          </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="profilePic" class="form-label">Profile Picture</label>
+            <input
+              type="file"
+              class="form-control"
+              id="profilePic"
+              formControlName="profilePic"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          id="back"
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Back
+        </button>
+        <button
+          type="button"
+          *ngIf="addBtn"
+          class="btn btn-primary"
+          [disabled]="!(formValue.dirty && formValue.valid)"
+          (click)="postEmployee()"
+        >
+          Add
+        </button>
+        <button
+          type="button"
+          *ngIf="updateBtn"
+          class="btn btn-primary"
+          [disabled]="!(formValue.dirty && formValue.valid)"
+          (click)="UpdateEmployee()"
+        >
+          Update
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
