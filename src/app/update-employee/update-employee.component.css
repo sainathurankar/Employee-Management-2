@@ -1,0 +1,11 @@
+.modal-dialog{
+    margin-top: 80px;
+}
+.error{
+  color: red;
+}
+img{
+      margin-top: 100px;
+    width: 200px;
+    height: auto;
+}

@@ -22,6 +22,11 @@ export class ApiService {
       })
     );
   }
+  getEmployeeById(id:number){
+    return this.http.get<any>('/employee/'+id).pipe(map((res)=>{
+      return res;
+    }));
+  }
 
   updateEmployee(data: any, id:number) {
     return this.http.post<any>('/update/'+id, data).pipe(
